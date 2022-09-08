@@ -8,7 +8,6 @@ import ru.netology.page.LoginPage;
 
 import static ru.netology.data.SQLHelper.cleanDatabase;
 import static com.codeborne.selenide.Selenide.open;
-import static src.ru.netology.data.SQLHelper.cleanDatabase;
 
 public class BankLoginTest {
 
@@ -18,13 +17,21 @@ public class BankLoginTest {
     }
 
     @Test
-    void shouldSuccessfulLogin() {
+    void shouldSuccessfullyLogin() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
         var authInfo = DataHelper.getAuthInfoWithTestData();
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verifyVerificationPageVisibility();
         var verificationCode = SQLHelper.getVerificationCode();
-        verificationPage.verify(verificationCode.getCode());
+        verificationPage.validVerify(verificationCode.getCode());
     }
+
+//    @Test
+//    void shouldGetErrorNotificationIfLoginWithRandomUserWithoutAddingToBase() {
+//        var loginPage = open("http://localhost:9999", LoginPage.class);
+//        var authInfo = DataHelper.generateRandomUser();
+//        loginPage.validLogin(authInfo);
+//        loginPage.verifyErrorNotificationVisiblity();
+//    }
 
 }
