@@ -1,9 +1,12 @@
 package ru.netology.page;
 
 import com.codeborne.selenide.SelenideElement;
+import ru.netology.data.DataHelper;
+
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-
 
 public class VerificationPage {
     private SelenideElement codeField = $("[data-test-id=code] input");
@@ -15,7 +18,7 @@ public class VerificationPage {
     }
 
     public void getError() {
-        error.shouldBe(visible);
+        error.shouldBe(visible, Duration.ofSeconds(5));
     }
 
     public void verify(String verificationCode) {

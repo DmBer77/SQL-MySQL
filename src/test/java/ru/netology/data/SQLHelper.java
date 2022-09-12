@@ -23,24 +23,12 @@ public class SQLHelper {
 
     @SneakyThrows
     public static DataHelper.VerificationCode getVerificationCode() {
-        var codeSQL = "SELECT * FROM auth_codes ORDER BY created DESC";
+        var codeSQL = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1";
         try (var conn = getConn()) {
-            var result = runner.query(conn, codeSQL, new BeanListHandler<>(DataHelper.AuthCode.class));
-            return new DataHelper.VerificationCode(result.get(0).getCode());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+            var result = runner.query(conn, codeSQL, new ScalarHandler<String>());
+            return new DataHelper.VerificationCode(result);
         }
-        return null;
     }
-//    @SneakyThrows
-//    public static DataHelper.VerificationCode getVerificationCode(){
-//        var codeSQL = "SELECT code FROM auth_codes ORDERED BY created DESC LIMIT 1";
-//        try (var conn = getConn()) {
-//            var result = runner.query(conn, codeSQL, new ScalarHandler<String>());
-//            return new DataHelper.VerificationCode(result);
-//        }
-//    }
-
     @SneakyThrows
     public static void cleanDatabase() {
         var connection = getConn();
